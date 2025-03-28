@@ -19,8 +19,6 @@
 │   └── themes/       # 主题相关图片
 ├── pages/             # 小程序页面
 ├── styles/            # 样式文件
-└── utils/             # 工具函数
-    └── image_generator.py  # 图像生成脚本
 ```
 
 ## 图像资源
