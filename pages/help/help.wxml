@@ -1,0 +1,131 @@
+<view class="container">
+  <!-- 背景效果 -->
+  <view class="bg-image"></view>
+  <view class="stars"></view>
+  <view class="mist"></view>
+  
+  <!-- 标题 -->
+  <view class="help-title">游戏帮助</view>
+  
+  <!-- 帮助内容 -->
+  <scroll-view class="help-content" scroll-y="true">
+    <!-- 游戏介绍 -->
+    <view class="help-section">
+      <view class="section-title">游戏介绍</view>
+      <view class="section-content">
+        <view class="help-text">《魔法心动》是一款休闲益智类游戏，玩家需要连接相同颜色的方块，形成魔法能量，解锁更多精彩内容。</view>
+        <view class="help-image-container">
+          <image class="help-image" src="../../images/help/game_intro.png" mode="aspectFit"></image>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 游戏玩法 -->
+    <view class="help-section">
+      <view class="section-title">基本玩法</view>
+      <view class="section-content">
+        <view class="help-text">1. 点击"魔法门"进入游戏界面</view>
+        <view class="help-text">2. 点击并连接三个或更多相同颜色的方块</view>
+        <view class="help-text">3. 连接的方块会消除并积累魔法能量</view>
+        <view class="help-text">4. 当能量值满时，可以使用特殊魔法技能</view>
+        <view class="help-text">5. 尝试创造连击，获得更高分数</view>
+        <view class="help-image-container">
+          <image class="help-image" src="../../images/help/gameplay.png" mode="aspectFit"></image>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 颜色方块 -->
+    <view class="help-section">
+      <view class="section-title">方块颜色</view>
+      <view class="section-content">
+        <view class="colors-grid">
+          <view class="color-item">
+            <view class="color-sample red"></view>
+            <view class="color-name">红色方块</view>
+          </view>
+          <view class="color-item">
+            <view class="color-sample green"></view>
+            <view class="color-name">绿色方块</view>
+          </view>
+          <view class="color-item">
+            <view class="color-sample blue"></view>
+            <view class="color-name">蓝色方块</view>
+          </view>
+          <view class="color-item">
+            <view class="color-sample yellow"></view>
+            <view class="color-name">黄色方块</view>
+          </view>
+          <view class="color-item">
+            <view class="color-sample purple"></view>
+            <view class="color-name">紫色方块</view>
+          </view>
+          <view class="color-item">
+            <view class="color-sample teal"></view>
+            <view class="color-name">青色方块</view>
+          </view>
+        </view>
+        <view class="help-text">连接相同颜色的方块可以消除。每种颜色有不同的特性，随着游戏进度会解锁更多特殊效果。</view>
+      </view>
+    </view>
+    
+    <!-- 魔法技能 -->
+    <view class="help-section">
+      <view class="section-title">魔法技能</view>
+      <view class="section-content">
+        <view class="help-text">当能量值达到100%时，可以使用以下魔法技能：</view>
+        <view class="skills-list">
+          <view class="skill-item">
+            <view class="skill-icon clearall"></view>
+            <view class="skill-info">
+              <view class="skill-name">颜色清除</view>
+              <view class="skill-desc">清除棋盘上随机一种颜色的方块</view>
+            </view>
+          </view>
+          <view class="skill-item">
+            <view class="skill-icon transform"></view>
+            <view class="skill-info">
+              <view class="skill-name">颜色转换</view>
+              <view class="skill-desc">转换所有方块的颜色</view>
+            </view>
+          </view>
+          <view class="skill-item">
+            <view class="skill-icon random"></view>
+            <view class="skill-info">
+              <view class="skill-name">随机消除</view>
+              <view class="skill-desc">随机消除一半的方块</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 游戏技巧 -->
+    <view class="help-section">
+      <view class="section-title">游戏技巧</view>
+      <view class="section-content">
+        <view class="tip-item">
+          <view class="tip-number">1</view>
+          <view class="tip-text">尽量创造连击，连击可以大幅增加得分和能量获取</view>
+        </view>
+        <view class="tip-item">
+          <view class="tip-number">2</view>
+          <view class="tip-text">合理使用魔法技能，某些关卡特定技能更有效</view>
+        </view>
+        <view class="tip-item">
+          <view class="tip-number">3</view>
+          <view class="tip-text">观察整个棋盘，规划最佳的消除路径</view>
+        </view>
+        <view class="tip-item">
+          <view class="tip-number">4</view>
+          <view class="tip-text">尝试形成环形或Z字形的连接路径，可以连接更多方块</view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+  
+  <!-- 底部按钮 -->
+  <view class="bottom-buttons">
+    <button class="back-button" bindtap="navigateBack">返回</button>
+  </view>
+</view> 

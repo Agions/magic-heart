@@ -1,0 +1,663 @@
+/* 导入全局样式 */
+@import "../../styles/main.wxss";
+
+/* 游戏容器 */
+.game-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #1a1b2e 0%, #2d2e4a 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.blur-bg {
+  backdrop-filter: blur(10px);
+}
+
+/* 背景动画 */
+.bg-layer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.stars {
+  position: absolute;
+  width: 100%;
+  height: 200%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0));
+  background-size: 200px 200px;
+  animation: starMove 4s linear infinite;
+}
+
+.floating-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 40%);
+  animation: particleFloat 8s ease-in-out infinite;
+}
+
+/* 顶部状态栏 */
+.status-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 80rpx 40rpx 40rpx;
+  background: linear-gradient(to bottom, 
+    rgba(0,0,0,0.8) 0%, 
+    rgba(0,0,0,0.4) 70%,
+    rgba(0,0,0,0) 100%);
+}
+
+.score-section {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.score-display {
+  background: rgba(255,255,255,0.1);
+  padding: 10rpx 20rpx;
+  border-radius: 30rpx;
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.score-label {
+  font-size: 28rpx;
+  color: rgba(255,255,255,0.8);
+}
+
+.score-value {
+  font-size: 36rpx;
+  color: #fff;
+  font-weight: bold;
+  min-width: 80rpx;
+  text-align: right;
+}
+
+.combo-display {
+  background: rgba(255,215,0,0.2);
+  padding: 5rpx 15rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  gap: 5rpx;
+}
+
+.combo-count {
+  color: #ffd700;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.combo-label {
+  color: #ffd700;
+  font-size: 24rpx;
+}
+
+.energy-section {
+  flex: 1;
+  max-width: 300rpx;
+  margin-left: 20rpx;
+}
+
+.energy-bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5rpx;
+}
+
+.energy-bar {
+  width: 100%;
+  height: 20rpx;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+
+.energy-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #8BC34A);
+  border-radius: 10rpx;
+  position: relative;
+  transition: width 0.3s ease;
+}
+
+.energy-glow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20rpx;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #fff);
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+.energy-value {
+  font-size: 24rpx;
+  color: rgba(255,255,255,0.8);
+}
+
+/* 游戏主区域 */
+.game-board {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx;
+  margin-top: 180rpx;
+  margin-bottom: 100rpx;
+  z-index: 2;
+}
+
+.hex-grid-container {
+  width: 100%;
+  max-width: 750rpx;
+  aspect-ratio: 0.85;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hex-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12rpx;
+  padding: 20rpx;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  width: 90%;
+}
+
+.hex-cell {
+  position: relative;
+  width: 100rpx;
+  height: 115rpx;
+  margin: 4rpx;
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.hex-cell.dragging {
+  transform: scale(1.1) translateZ(20px);
+  z-index: 100;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.hex-cell.target {
+  transform: scale(0.95);
+  opacity: 0.8;
+  border: 2px dashed #fff;
+}
+
+.hex-cell.selected {
+  transform: scale(1.1) translateZ(20px);
+  box-shadow: 0 0 20rpx rgba(255,255,255,0.5);
+  z-index: 2;
+}
+
+.hex-cell.matched {
+  animation: eliminate 0.5s ease-out forwards;
+}
+
+.hex-cell.matched .hex-content {
+  animation: sparkle 0.5s ease-out forwards;
+}
+
+.hex-cell.matched .hex-inner {
+  animation: rotate-out 0.5s ease-out forwards;
+}
+
+.hex-inner {
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.hex-content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.hex-content.matched {
+  animation: popAndFade 0.5s ease-out;
+}
+
+.selection-indicator {
+  position: absolute;
+  top: -5rpx;
+  left: -5rpx;
+  right: -5rpx;
+  bottom: -5rpx;
+  border: 3rpx solid rgba(255,255,255,0.5);
+  border-radius: 25rpx;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.hex-cell.selected .selection-indicator {
+  opacity: 1;
+}
+
+/* 控制面板 */
+.control-panel {
+  position: fixed;
+  bottom: 40rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  gap: 60rpx;
+  z-index: 3;
+  padding: 20rpx;
+  background: linear-gradient(to top, 
+    rgba(0,0,0,0.4) 0%,
+    rgba(0,0,0,0.2) 50%,
+    rgba(0,0,0,0) 100%);
+  border-radius: 40rpx;
+  backdrop-filter: blur(10px);
+}
+
+.magic-button, .cancel-button {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s ease;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.2);
+}
+
+.magic-button.ready {
+  background: linear-gradient(135deg, #4CAF50, #8BC34A);
+  animation: readyPulse 2s infinite;
+}
+
+.button-glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.magic-button:active .button-glow,
+.cancel-button:active .button-glow {
+  opacity: 1;
+}
+
+/* 功能按钮组 */
+.function-buttons {
+  position: fixed;
+  bottom: 40rpx;
+  right: 40rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 30rpx;
+  z-index: 10;
+}
+
+.function-buttons .button {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4rpx 15rpx rgba(0,0,0,0.2);
+}
+
+.function-buttons .button:active {
+  transform: scale(0.95);
+  background: rgba(255,255,255,0.2);
+}
+
+/* 主菜单 */
+.main-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.menu-content {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(20px);
+  padding: 60rpx;
+  border-radius: 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40rpx;
+  animation: menuAppear 0.5s ease;
+}
+
+.game-title {
+  text-align: center;
+  position: relative;
+}
+
+.title-text {
+  font-size: 60rpx;
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 0 0 20rpx rgba(255,255,255,0.5);
+}
+
+.title-decoration {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.magic-spark {
+  position: absolute;
+  width: 10rpx;
+  height: 10rpx;
+  background: #fff;
+  border-radius: 50%;
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  width: 100%;
+  min-width: 300rpx;
+}
+
+.menu-button {
+  width: 100%;
+  height: 90rpx;
+  border: none;
+  border-radius: 45rpx;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.2);
+}
+
+.menu-button.primary {
+  background: linear-gradient(135deg, #4CAF50, #8BC34A);
+  font-weight: bold;
+  box-shadow: 0 4rpx 15rpx rgba(76,175,80,0.3);
+}
+
+.menu-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 1rpx 5rpx rgba(0,0,0,0.1);
+}
+
+/* 添加按钮悬停效果 */
+.menu-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.menu-button:active::after {
+  opacity: 1;
+}
+
+/* 动画 */
+@keyframes starMove {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+@keyframes particleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes matchAnimation {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.5; }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+@keyframes readyPulse {
+  0%, 100% { box-shadow: 0 0 20rpx rgba(76,175,80,0.5); }
+  50% { box-shadow: 0 0 40rpx rgba(76,175,80,0.8); }
+}
+
+@keyframes menuAppear {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% { 
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% { 
+    transform: scale(1) rotate(180deg);
+    opacity: 1;
+  }
+}
+
+@keyframes popAndFade {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes eliminate {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+    opacity: 0.8;
+    filter: brightness(1.5);
+  }
+  100% {
+    transform: scale(0) rotate(360deg);
+    opacity: 0;
+    filter: brightness(2);
+  }
+}
+
+@keyframes rotate-out {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  100% {
+    transform: rotate(360deg) scale(0);
+  }
+}
+
+/* 颜色类型样式 */
+.hex-cell.red { background: linear-gradient(135deg, #ff6b6b, #ff4757); }
+.hex-cell.blue { background: linear-gradient(135deg, #70a1ff, #1e90ff); }
+.hex-cell.green { background: linear-gradient(135deg, #7bed9f, #2ed573); }
+.hex-cell.yellow { background: linear-gradient(135deg, #ffd32a, #ffa502); }
+.hex-cell.purple { background: linear-gradient(135deg, #a88beb, #8c7ae6); }
+
+/* 消除时的粒子效果 */
+.particle-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.particle {
+  position: absolute;
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0;
+}
+
+/* 新格子出现的动画 */
+.hex-cell.new {
+  animation: drop-in 0.3s ease-out forwards;
+}
+
+/* 连击效果 */
+.combo-display {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 80rpx;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 20rpx rgba(255,255,255,0.8);
+  opacity: 0;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.combo-display.active {
+  animation: combo-show 0.5s ease-out forwards;
+}
+
+@keyframes combo-show {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+/* 分数增加效果 */
+.score-add {
+  position: absolute;
+  color: #fff;
+  font-size: 40rpx;
+  font-weight: bold;
+  text-shadow: 0 0 10rpx rgba(255,255,255,0.8);
+  pointer-events: none;
+  animation: score-float 1s ease-out forwards;
+}
+
+@keyframes score-float {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100rpx) scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* 颜色特效 */
+.hex-cell.red.matched { 
+  box-shadow: 0 0 20rpx rgba(255,100,100,0.8);
+  background: radial-gradient(circle at center, #ff6b6b, #ff4757);
+}
+
+.hex-cell.blue.matched {
+  box-shadow: 0 0 20rpx rgba(100,100,255,0.8);
+  background: radial-gradient(circle at center, #70a1ff, #1e90ff);
+}
+
+.hex-cell.green.matched {
+  box-shadow: 0 0 20rpx rgba(100,255,100,0.8);
+  background: radial-gradient(circle at center, #7bed9f, #2ed573);
+}
+
+.hex-cell.yellow.matched {
+  box-shadow: 0 0 20rpx rgba(255,255,100,0.8);
+  background: radial-gradient(circle at center, #ffd32a, #ffa502);
+}
+
+.hex-cell.purple.matched {
+  box-shadow: 0 0 20rpx rgba(200,100,255,0.8);
+  background: radial-gradient(circle at center, #a88beb, #8c7ae6);
+} 

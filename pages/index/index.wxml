@@ -1,0 +1,108 @@
+<view class="game-container {{menuOpen ? 'blur-bg' : ''}}">
+  <!-- 背景动画层 -->
+  <view class="bg-layer">
+    <view class="stars"></view>
+    <view class="floating-particles"></view>
+  </view>
+
+  <!-- 粒子效果容器 -->
+  <view class="particle-container"></view>
+
+  <!-- 连击显示 -->
+  <view class="combo-display">
+    <text class="combo-text"></text>
+  </view>
+
+  <!-- 顶部状态栏 -->
+  <view class="status-bar">
+    <view class="score-section">
+      <view class="score-display">
+        <text class="score-label">分数</text>
+        <text class="score-value">{{score}}</text>
+      </view>
+      <view class="combo-display" wx:if="{{combo > 1}}">
+        <text class="combo-count">x{{combo}}</text>
+        <text class="combo-label">连击</text>
+      </view>
+    </view>
+    
+    <view class="energy-section">
+      <view class="energy-bar-container">
+        <view class="energy-bar">
+          <view class="energy-fill" style="width: {{energyPercent}}%">
+            <view class="energy-glow"></view>
+          </view>
+        </view>
+        <text class="energy-value">{{currentEnergy}}/{{maxEnergy}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 游戏主区域 -->
+  <view class="game-board {{gameStarted ? 'active' : ''}}">
+    <view class="hex-grid-container">
+      <view class="hex-grid">
+        <block wx:for="{{hexCells}}" wx:key="id">
+          <view 
+            id="cell-{{item.id}}"
+            class="hex-cell {{item.type}} {{dragStartCell.id === item.id ? 'dragging' : ''}} {{dragEndCell.id === item.id ? 'target' : ''}} {{item.matched ? 'matched' : ''}} {{item.isNew ? 'new' : ''}}"
+            data-id="{{item.id}}"
+            data-row="{{item.row}}"
+            data-col="{{item.col}}"
+            data-type="{{item.type}}"
+            catch:touchstart="touchStart"
+            catch:touchmove="touchMove"
+            catch:touchend="touchEnd"
+            catch:touchcancel="touchEnd">
+            <view class="hex-content">
+              <view class="hex-inner"></view>
+              <view class="hex-glow"></view>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <!-- 控制面板 -->
+  <view class="control-panel">
+    <view class="magic-button {{currentEnergy >= maxEnergy ? 'ready' : ''}}"
+          bindtap="useSpecialPower">
+      <image src="../../images/buttons/power.png" mode="aspectFit"></image>
+      <view class="button-glow"></view>
+    </view>
+    <view class="cancel-button" bindtap="cancelSelection">
+      <image src="../../images/buttons/cancel.png" mode="aspectFit"></image>
+    </view>
+  </view>
+
+  <!-- 功能按钮组 -->
+  <view class="function-buttons">
+    <view class="button settings" bindtap="openSettings">
+      <image src="../../images/buttons/settings.png" mode="aspectFit"></image>
+    </view>
+    <view class="button store" bindtap="openStore">
+      <image src="../../images/buttons/store.png" mode="aspectFit"></image>
+    </view>
+    <view class="button friends" bindtap="openFriends">
+      <image src="../../images/buttons/friends.png" mode="aspectFit"></image>
+    </view>
+  </view>
+
+  <!-- 主菜单 -->
+  <view class="main-menu" wx:if="{{menuOpen}}">
+    <view class="menu-content">
+      <view class="game-title">
+        <text class="title-text">魔法心动</text>
+        <view class="title-decoration">
+          <view class="magic-spark"></view>
+        </view>
+      </view>
+      <view class="menu-buttons">
+        <view class="menu-button primary" bindtap="startGame">开始游戏</view>
+        <view class="menu-button" bindtap="openSettingsMenu">设置</view>
+        <view class="menu-button" bindtap="openHelpMenu">帮助</view>
+      </view>
+    </view>
+  </view>
+</view> 

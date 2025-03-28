@@ -1,0 +1,333 @@
+/* 导入全局样式 */
+@import "../../styles/main.wxss";
+
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background-color: #000;
+}
+
+/* 背景图像 */
+.bg-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #1a237e 0%, #0d1042 50%, #060621 100%);
+  z-index: 0;
+  opacity: 0.8;
+}
+
+/* 星星背景 */
+.stars {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #eef 100%, transparent),
+    radial-gradient(2px 2px at 40px 70px, #fff 100%, transparent),
+    radial-gradient(1px 1px at 90px 40px, #fff 100%, transparent),
+    radial-gradient(2px 2px at 160px 120px, #ddf 100%, transparent),
+    radial-gradient(1px 1px at 200px 90px, #fff 100%, transparent),
+    radial-gradient(3px 3px at 260px 40px, #fff 100%, transparent),
+    radial-gradient(1px 1px at 300px 200px, #fff 100%, transparent),
+    radial-gradient(2px 2px at 350px 130px, #fff 100%, transparent);
+  background-repeat: repeat;
+  background-size: 400px 400px;
+  animation: stars-move 120s linear infinite;
+}
+
+/* 云雾效果 */
+.mist {
+  position: absolute;
+  width: 200%;
+  height: 60%;
+  bottom: 0;
+  left: -50%;
+  background: radial-gradient(ellipse at center, rgba(100, 100, 255, 0.2) 0%, rgba(30, 30, 80, 0) 70%);
+  transform: rotate(-5deg);
+  z-index: 2;
+  animation: mist-move 30s ease-in-out infinite alternate;
+}
+
+/* 帮助标题 */
+.help-title {
+  font-size: 36px;
+  font-weight: bold;
+  color: white;
+  margin-top: 60px;
+  margin-bottom: 20px;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+  animation: glow 2s ease-in-out infinite alternate;
+  z-index: 10;
+}
+
+/* 帮助内容容器 */
+.help-content {
+  width: 90%;
+  max-width: 600px;
+  height: calc(100vh - 200px);
+  background: rgba(30, 30, 60, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.1);
+  z-index: 10;
+  margin-bottom: 20px;
+}
+
+/* 帮助部分 */
+.help-section {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 25px;
+  margin-bottom: 25px;
+}
+
+.help-section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+/* 部分标题 */
+.section-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 15px;
+  text-shadow: 0 0 10px rgba(150, 150, 250, 0.5);
+}
+
+/* 部分内容 */
+.section-content {
+  padding-left: 10px;
+}
+
+/* 帮助文本 */
+.help-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: white;
+  margin-bottom: 10px;
+}
+
+/* 帮助图片容器 */
+.help-image-container {
+  margin: 15px 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.help-image {
+  width: 90%;
+  height: 150px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* 颜色网格 */
+.colors-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 15px;
+  margin: 15px 0;
+}
+
+.color-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(33% - 10px);
+  margin-bottom: 15px;
+}
+
+.color-sample {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.color-sample.red {
+  background: linear-gradient(135deg, #ff6b6b 20%, #d63031 100%);
+}
+.color-sample.green {
+  background: linear-gradient(135deg, #20bf6b 20%, #0b8457 100%);
+}
+.color-sample.blue {
+  background: linear-gradient(135deg, #45aaf2 20%, #2980b9 100%);
+}
+.color-sample.yellow {
+  background: linear-gradient(135deg, #fed330 20%, #f39c12 100%);
+}
+.color-sample.purple {
+  background: linear-gradient(135deg, #8e44ad 20%, #6c3483 100%);
+}
+.color-sample.teal {
+  background: linear-gradient(135deg, #00b894 20%, #009173 100%);
+}
+
+.color-name {
+  font-size: 14px;
+  color: white;
+  text-align: center;
+}
+
+/* 技能列表 */
+.skills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 15px 0;
+}
+
+.skill-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+
+.skill-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 24px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.skill-icon.clearall {
+  background: linear-gradient(135deg, #ff6b6b 0%, #b92b27 100%);
+}
+
+.skill-icon.transform {
+  background: linear-gradient(135deg, #3a7bd5 0%, #2b589a 100%);
+}
+
+.skill-icon.random {
+  background: linear-gradient(135deg, #9d50bb 0%, #6e48aa 100%);
+}
+
+.skill-info {
+  flex: 1;
+}
+
+.skill-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 5px;
+}
+
+.skill-desc {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* 技巧项目 */
+.tip-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.tip-number {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(255, 107, 107, 0.4);
+}
+
+.tip-text {
+  flex: 1;
+  font-size: 16px;
+  color: white;
+  line-height: 1.4;
+}
+
+/* 底部按钮 */
+.bottom-buttons {
+  width: 90%;
+  max-width: 600px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+  z-index: 10;
+}
+
+.back-button {
+  width: 160px;
+  height: 50px;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  transform: scale(1.05);
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* 动画定义 */
+@keyframes glow {
+  0% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+  100% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 30px rgba(255, 255, 255, 0.5); }
+}
+
+@keyframes stars-move {
+  0% { background-position: 0 0; }
+  100% { background-position: 400px 400px; }
+}
+
+@keyframes mist-move {
+  0% { transform: translateX(-10%) rotate(-5deg); }
+  100% { transform: translateX(10%) rotate(-5deg); }
+} 
